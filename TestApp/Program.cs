@@ -10,7 +10,16 @@ namespace TestApp
     {
         static void Main(string[] args)
         {
-            Bingo(new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 });
+
+            while (true)
+            {
+                Console.WriteLine("Input:\n");
+                var input = Console.ReadLine();
+                var result = Calculate(input);
+                Console.WriteLine($"result : {result}");
+            }
+            //var result = Calculate("5+6");
+            //Console.WriteLine($"result : {result}");
 
             Console.ReadLine();
         }
@@ -45,18 +54,33 @@ namespace TestApp
             return false;
         }
 
+        /// <summary>
+        /// Calucalate formula string
+        /// </summary>
+        /// <param name="formula"></param>
+        /// <returns></returns>
         static double Calculate(string formula)
         {
-            Stack<int> numbers = new Stack<int>();
+            Stack<double> numbers = new Stack<double>();
             Stack<char> ops = new Stack<char>();
 
-            float result = 0;
+            List<double> numberList = new List<double>();
+            List<char> opList = new List<char>();
+
+            List<int> composeNum = new List<int>();
+
+            double result = 0;
             for (int i = 0; i < formula.Length; i++)
             {
                 char ch = formula[i];
-                int n;
-                if (Int32.TryParse(ch.ToString(), out n))
+                if (char.IsDigit(ch))
                 {
+                    string temp = ch.ToString();
+                    for (; i + 1 < formula.Length && char.IsDigit(formula[i + 1]); i++)
+                    {
+                        temp += formula[i + 1];
+                    }
+                    int n = int.Parse(temp);
                     numbers.Push(n);
                 }
                 else if(char.IsWhiteSpace(ch))
@@ -65,9 +89,6 @@ namespace TestApp
                 }
                 else if (ch == ')')
                 {
-                    List<int> numberList = new List<int>();
-                    List<char> opList = new List<char>();
-                    float subResult = 0;
                     numberList.Add(numbers.Count > 0 ? numbers.Pop() : 0);
                     while (ops.Count > 0)
                     {
@@ -81,8 +102,8 @@ namespace TestApp
                     }
                     numberList.Reverse();
                     opList.Reverse();
-                    subResult = CalculateGroup(numberList, opList);
-                    result += subResult;
+                    double subResult = CalculateGroup(numberList, opList);
+                    numbers.Push(subResult);
                 }
                 else
                 {
@@ -90,12 +111,43 @@ namespace TestApp
                 }
             }
 
-            return double.MinValue;
+            if(numbers.Count > 0)
+            {
+                numberList.Add(numbers.Count > 0 ? numbers.Pop() : 0);
+                while (ops.Count > 0)
+                {
+                    var op = ops.Pop();
+                    opList.Add(op);
+                    numberList.Add(numbers.Count > 0 ? numbers.Pop() : 0);
+                }
+            }
+            numberList.Reverse();
+            opList.Reverse();
+            result = CalculateGroup(numberList, opList);
+
+            return result;
         }
 
-        static float CalculateGroup(List<int> numberList, List<char> opList)
+        static double CalculateGroup(List<double> numberList, List<char> opList)
         {
-            float result = numberList[0];
+            Stack<double> nums = new Stack<double>(numberList);
+            Stack<char> ops = new Stack<char>(opList);
+            //use stack to cal first the group of + and -
+            for (int i = 0; i < opList.Count; i++)
+            {
+                if (opList[i] == '+' || opList[i] == '-')
+                {
+                    List<double> subGroupNumb = new List<double>();
+                    var n = i;
+                    subGroupNumb.Add(numberList[n]);
+                    while (opList[i] == '+' || opList[i] == '-')
+                    {
+
+                    }
+                }
+            }
+
+            double result = numberList[0];
             numberList.RemoveAt(0);
             while (opList.Count > 0)
             {
@@ -106,10 +158,10 @@ namespace TestApp
                 result = CalculateUnit(result, second, op);
             }
 
-            return 0;
+            return result;
         }
 
-        static float CalculateUnit(float first, int second, char op)
+        static double CalculateUnit(double first, double second, char op)
         {
             switch (op)
             {
