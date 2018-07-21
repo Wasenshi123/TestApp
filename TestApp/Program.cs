@@ -64,8 +64,8 @@ namespace TestApp
             Stack<double> numbers = new Stack<double>();
             Stack<char> ops = new Stack<char>();
 
-            List<double> numberList = new List<double>();
-            List<char> opList = new List<char>();
+            Stack<double> numberList = new Stack<double>();
+            Stack<char> opList = new Stack<char>();
 
             List<int> composeNum = new List<int>();
 
@@ -89,7 +89,7 @@ namespace TestApp
                 }
                 else if (ch == ')')
                 {
-                    numberList.Add(numbers.Count > 0 ? numbers.Pop() : 0);
+                    numberList.Push(numbers.Count > 0 ? numbers.Pop() : 0);
                     while (ops.Count > 0)
                     {
                         var op = ops.Pop();
@@ -97,12 +97,10 @@ namespace TestApp
                         {
                             break;
                         }
-                        opList.Add(op);
-                        numberList.Add(numbers.Count > 0 ? numbers.Pop() : 0);
+                        opList.Push(op);
+                        numberList.Push(numbers.Count > 0 ? numbers.Pop() : 0);
                     }
-                    numberList.Reverse();
-                    opList.Reverse();
-                    double subResult = CalculateGroup(numberList, opList);
+                    double subResult = CalculateGroupWithPriority(numberList, opList);
                     numbers.Push(subResult);
                 }
                 else
@@ -113,41 +111,55 @@ namespace TestApp
 
             if(numbers.Count > 0)
             {
-                numberList.Add(numbers.Count > 0 ? numbers.Pop() : 0);
+                numberList.Push(numbers.Count > 0 ? numbers.Pop() : 0);
                 while (ops.Count > 0)
                 {
                     var op = ops.Pop();
-                    opList.Add(op);
-                    numberList.Add(numbers.Count > 0 ? numbers.Pop() : 0);
+                    opList.Push(op);
+                    numberList.Push(numbers.Count > 0 ? numbers.Pop() : 0);
                 }
             }
             numberList.Reverse();
             opList.Reverse();
-            result = CalculateGroup(numberList, opList);
+            result = CalculateGroupWithPriority(numberList, opList);
 
             return result;
         }
 
-        static double CalculateGroup(List<double> numberList, List<char> opList)
+        static double CalculateGroupWithPriority(Stack<double> numberList, Stack<char> opList)
         {
-            Stack<double> nums = new Stack<double>(numberList);
-            Stack<char> ops = new Stack<char>(opList);
-            //use stack to cal first the group of + and -
-            for (int i = 0; i < opList.Count; i++)
+            Stack<double> nums = new Stack<double>();
+            Stack<char> ops = new Stack<char>();
+            //use stack to calculate first the group of + and -
+            while (opList.Count > 0)
             {
-                if (opList[i] == '+' || opList[i] == '-')
+                if (opList.Peek() == '+' || opList.Peek() == '-')
                 {
-                    List<double> subGroupNumb = new List<double>();
-                    var n = i;
-                    subGroupNumb.Add(numberList[n]);
-                    while (opList[i] == '+' || opList[i] == '-')
-                    {
+                    Stack<double> subGroupNumb = new Stack<double>();
+                    Stack<char> subOp = new Stack<char>();
 
+                    subGroupNumb.Push(numberList.Pop());
+                    while (opList.Count > 0 && (opList.Peek() == '+' || opList.Peek() == '-'))
+                    {
+                        subGroupNumb.Push(numberList.Pop());
+                        subOp.Push(opList.Pop());
                     }
+                    nums.Push(CaluculateSet(new Stack<double>(subGroupNumb), new Stack<char>(subOp)));
+                }
+                else
+                {
+                    nums.Push(numberList.Pop());
+                    ops.Push(opList.Pop());
                 }
             }
+            if (numberList.Count > 0)
+            {
+                nums.Push(numberList.Pop());
+            }
 
-            double result = numberList[0];
+            double result = CaluculateSet(new Stack<double>(nums), new Stack<char>(ops));
+
+            /*double result = numberList[0];
             numberList.RemoveAt(0);
             while (opList.Count > 0)
             {
@@ -155,6 +167,19 @@ namespace TestApp
                 opList.RemoveAt(0);
                 var second = numberList[0];
                 numberList.RemoveAt(0);
+                result = CalculateUnit(result, second, op);
+            }*/
+
+            return result;
+        }
+
+        static double CaluculateSet(Stack<double> numberList, Stack<char> opList)
+        {
+            double result = numberList.Pop();
+            while (opList.Count > 0)
+            {
+                var op = opList.Pop();
+                var second = numberList.Pop();
                 result = CalculateUnit(result, second, op);
             }
 
