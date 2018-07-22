@@ -5,9 +5,9 @@ Ultimately, I used around 2-3 hours to finish all 2 functionalities, as you can 
 (Excluding time used to comprehend the requirements and time that wasn't used to code or away from keyboard, etc.)
 
 ### Time Used Digestion
-12.00 - ~13.00 : try to understand the problems and requirements. Also need to analyse the approach and scope of the test. (should I create UI? it needs me to do input managing or any UI at all? or just simple function with input/output? What about error or input managing?)
+12.00 - 13.00 : try to understand the problems and requirements. Also need to analyse the approach and scope of the test. (should I create UI? it needs me to do input managing or any UI at all? or just simple function with input/output? What about error or input managing?)
 
-~13.00 - 14.00 : Actually started coding the skeleton and rough concept/logic of 2 functionalities. (~ 1 hour)
+13.00 - 14.00 : Actually started coding the skeleton and rough concept/logic of 2 functionalities. ( 1 hour)
 
 14.00 - 15.15 : Stop coding and away from keyboard, knowing that the time is out.
 
