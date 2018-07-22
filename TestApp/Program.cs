@@ -8,7 +8,7 @@ namespace TestApp
         static void Main(string[] args)
         {
             RunBingo();
-
+            //RunCalculator();
 
             Console.ReadLine();
         }

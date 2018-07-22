@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TestApp
 {
@@ -31,11 +27,80 @@ namespace TestApp
                     Console.WriteLine("All of the numbers must be in range between 1-25.");
                     return false;
                 }
-                var row = Math.Ceiling(n / 5f) - 1;
-                var col = (n - 1) % 5;
+                int row = (int)Math.Ceiling(n / 5f) - 1;
+                int col = (n - 1) % 5;
                 //Console.WriteLine($"{row} : {col}");
+                table[row, col] = true;
             }
+
+            for (int i = 0; i < 5; i++)
+            {
+                if (CheckRow(table, i))
+                {
+                    return true;
+                }
+                if (CheckCol(table, i))
+                {
+                    return true;
+                }
+            }
+            if (CheckDiagonal(table))
+            {
+                return true;
+            }
+            if(CheckDiagonal(table, true))
+            {
+                return true;
+            }
+
             return false;
+        }
+
+        private static bool CheckCol(bool[,] table, int seed)
+        {
+            var bingo = true;
+            var col = seed;
+            for (int ii = 0; ii < 5; ii++)
+            {
+                var row = ii;
+                if (!table[row, col])
+                {
+                    bingo = false;
+                    break;
+                }
+            }
+            return bingo;
+        }
+
+        private static bool CheckRow(bool[,] table, int seed)
+        {
+            var bingo = true;
+            var row = seed;
+            for (int ii = 0; ii < 5; ii++)
+            {
+                var col = ii;
+                if (!table[row, col])
+                {
+                    bingo = false;
+                    break;
+                }
+            }
+            return bingo;
+        }
+
+        private static bool CheckDiagonal(bool[,] table, bool inverse = false)
+        {
+            var bingo = true;
+            for (int i = 0; i < 5; i++)
+            {
+                var col = inverse ? 4 - i : i;
+                if (!table[i, col])
+                {
+                    bingo = false;
+                    break;
+                }
+            }
+            return bingo;
         }
     }
 }
