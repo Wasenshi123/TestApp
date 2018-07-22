@@ -5,7 +5,8 @@ Ultimately, I used around 2-3 hours to finish all 2 functionalities, as you can 
 (Excluding time used to comprehend the requirements and time that wasn't used to code or away from keyboard, etc.)
 
 ### Time Used Digestion
-12.00 - 13.00 : try to understand the problems and requirements. Also need to analyse the approach and scope of the test. (should I create UI? it needs me to do input managing or any UI at all? or just simple function with input/output? What about error or input managing?)
+12.00 - 13.00 : try to understand the problems and requirements. Also need to analyse the approach and scope of the test.
+(should I create UI? it needs me to do input managing or any UI at all? or just simple function with input/output? What about error or input managing? What it actually need me to do? what it mean Bingo game? what is the actual rule?)
 
 13.00 - 14.00 : Actually started coding the skeleton and rough concept/logic of 2 functionalities. ( 1 hour)
 
@@ -25,4 +26,4 @@ Ultimately, I used around 2-3 hours to finish all 2 functionalities, as you can 
 
 9.01 - 9.23 : Finished the first functionalities (Bingo Game) (22 minutes)
 
-**Accumulation : 1h + 30m + 32m + 31m + 22m = ~ 2 hours and 53 minutes
+**Accumulation : 1h + 30m + 32m + 31m + 22m = ~ 2 hours and 53 minutes (~ 2 hours and 22 minutes if excluding time not related to the logic coding)**
